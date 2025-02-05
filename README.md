@@ -152,3 +152,9 @@ There is also a method to build up your own filters that are not built in yet. T
 ```
 misty.register_event(Events.VoiceRecord, "found_speech_result", condition=[EventFilters.event_filter("errorCode", "=", 0)])
 ```
+
+# Notes
+
+Section for my personal notes on the Python-SDK for Misty
+
+On https://lessons.mistyrobotics.com/python/python-lessons/lesson-3-create-memories, Challenge 1, the first argument should be base64, not 65
