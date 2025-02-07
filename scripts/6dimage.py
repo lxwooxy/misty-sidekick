@@ -35,7 +35,7 @@ for result in results:
 # Convert to NumPy array for clustering
 features = np.array(features)
 
-# Apply DBSCAN Clustering with eps=150 for looser grouping
+# Apply DBSCAN Clustering with eps=150 
 dbscan = DBSCAN(eps=150, min_samples=1).fit(features)  
 
 cluster_labels = dbscan.labels_  # -1 means noise (not in a cluster)
