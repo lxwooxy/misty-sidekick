@@ -17,7 +17,8 @@ class Events:
         'CriticalStatusMessage', 'DialogAction', 'DriveEncoders',
         'FaceRecognition', 'FaceTraining', 'HaltCommand', 'HazardNotification',
         'IMU', 'KeyPhraseRecognized', 'LocomotionCommand', 'ObjectDetection',
-        'ObstacleMap', 'PRUMessage', 'RfCommMessage', 'RfCommState',
+        'ObstacleMap', 'PRUMessage', 'PoseEstimation',
+        'RfCommMessage', 'RfCommState',
         'RobotCommandMessage', 'RobotInteractionState', 'SelfState',
         'SerialMessage', 'SkillData', 'SkillSystemStateChange', 'SlamStatus',
         'SourceFocusConfigMessage', 'SourceTrackDataMessage',
@@ -43,6 +44,7 @@ class Events:
     ObjectDetection = 'ObjectDetection'
     ObstacleMap = 'ObstacleMap'
     PRUMessage = 'PRUMessage'
+    PoseEstimation = 'PoseEstimation'
     RfCommMessage = 'RfCommMessage'
     RfCommState = 'RfCommState'
     RobotCommandMessage = 'RobotCommandMessage'

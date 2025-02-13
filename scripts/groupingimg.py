@@ -7,7 +7,7 @@ from sklearn.cluster import DBSCAN
 model = YOLO("yolov8m.pt")  # Use yolov8s.pt for speed, yolov8x.pt for best accuracy
 
 # Load image
-image_path = "images/coffee1.png"
+image_path = "Misty-Python-SDK/images/coffee1.png"
 img = cv2.imread(image_path)
 
 # Run YOLO inference
@@ -22,8 +22,8 @@ for result in results:
         x1, y1, x2, y2 = map(int, box.xyxy[0])  # Bounding box coordinates
         confidence = box.conf[0].item()  # Confidence score
         
-        # ✅ Only keep high-confidence detections (50% or more)
-        if confidence < 0.45:  
+        # Only keep high-confidence detections (50% or more)
+        if confidence < 0.8:  
             continue
 
         # Compute height and X center (proxy for depth + spatial distance)
@@ -35,8 +35,10 @@ for result in results:
 # Convert to NumPy array for clustering
 features = np.array(features)
 
-# Apply DBSCAN Clustering with eps=150 
-dbscan = DBSCAN(eps=150, min_samples=1).fit(features)  
+# Apply DBSCAN Clustering with eps=150 for looser grouping
+#eps stands for epsilon, which is the maximum distance between two samples for one to be considered as in the neighborhood of the other.
+#DBSCAN is a clustering algorithm that groups together points that are closely packed together (points with many nearby neighbors), marking as outliers points that are in low-density regions (whose nearest neighbors are too far away).
+dbscan = DBSCAN(eps=170, min_samples=1).fit(features)  
 
 cluster_labels = dbscan.labels_  # -1 means noise (not in a cluster)
 
@@ -66,9 +68,12 @@ for i, (x1, y1, x2, y2, confidence) in enumerate(bboxes):
     cv2.putText(img, label, (x1, y1 - 10), 
                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
 
-# Display the image
+# Display the image and wait for a key press to close the window
 cv2.imshow("Final DBSCAN Grouping (eps=150, Confidence 50%+)", img)
-output_path = image_path.replace(".png", "_DBSCAN.png")
-cv2.imwrite(output_path, img)
+#save the image
+filename = image_path.split("/")[-1][:-4]
+cv2.imwrite(f"{filename}_DBSCAN.png", img)
+#DBSCAN stands for Density-Based Spatial Clustering of Applications with Noise
+cv2.setWindowProperty("Final DBSCAN Grouping (eps=150, Confidence 50%+)", cv2.WND_PROP_TOPMOST, 1)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
