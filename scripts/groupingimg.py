@@ -25,6 +25,10 @@ for result in results:
         # Only keep high-confidence detections (50% or more)
         if confidence < 0.8:  
             continue
+        
+        # Only keep people (class label 0)
+        if int(box.get_label()) != 0:
+            continue
 
         # Compute height and X center (proxy for depth + spatial distance)
         height = y2 - y1
