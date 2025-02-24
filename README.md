@@ -161,8 +161,12 @@ On https://lessons.mistyrobotics.com/python/python-lessons/lesson-3-create-memor
 
 On https://lessons.mistyrobotics.com/python-elements/misty-python-api/get-assets ```get_video_recording_list()``` should be ```get_video_recordings_list()``` instead
 
+# Recording a 5 second video
 ```
-# Retrieve the list of recorded videos
+misty.start_recording_video(fileName=misty_video_filename, mute=False, duration=5, width=1920, height=1080)
+```
+# Retrieve the list of recorded videos on Misty
+```
 video_list_response = misty.get_video_recordings_list()
 
 if video_list_response.status_code == 200:
@@ -177,10 +181,9 @@ if video_list_response.status_code == 200:
 else:
     print(f"Failed to retrieve video list: {video_list_response.text}")
 ```
-
+# Retrieve and save the video
 
 ```
-# Retrieve and save the video
 response = misty.get_video_recording(misty_video_filename, base64=False)
 
 if response.status_code == 200:
