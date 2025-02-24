@@ -159,7 +159,7 @@ Section for my personal notes on the Python-SDK for Misty
 
 On https://lessons.mistyrobotics.com/python/python-lessons/lesson-3-create-memories, Challenge 1, the first argument should be base64, not 65
 
-On https://lessons.mistyrobotics.com/python-elements/misty-python-api/get-assets get_video_recording_list() should be get_video_recordings_list() instead
+On https://lessons.mistyrobotics.com/python-elements/misty-python-api/get-assets ```get_video_recording_list()``` should be ```get_video_recordings_list()``` instead
 
 ```
 # Retrieve the list of recorded videos
