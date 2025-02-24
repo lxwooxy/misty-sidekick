@@ -19,7 +19,7 @@ image_folder = "misty_frames"
 os.makedirs(image_folder, exist_ok=True)
 
 # Take 60 pictures per second for 5 seconds (total: 300 images)
-frames_per_second = 60
+frames_per_second = 24
 duration_seconds = 5
 total_frames = frames_per_second * duration_seconds
 
