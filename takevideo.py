@@ -1,50 +1,61 @@
-import os
+import asyncio
+import websockets
+import cv2
+import numpy as np
 import time
-import base64
-from dotenv import load_dotenv
 from mistyPy.Robot import Robot
 
-# Load environment variables
-load_dotenv()
+# Set Misty's IP
+MISTY_IP = "YOUR_MISTY_IP"
+VIDEO_PORT = 5678  # WebSocket port
 
-MISTY_IP = os.getenv("MISTY_IP")
-
-if not MISTY_IP:
-    raise ValueError("MISTY_IP environment variable is not set.")
-
+# Initialize Misty
 misty = Robot(MISTY_IP)
 
-# Create a local folder for images
-image_folder = "misty_frames"
-os.makedirs(image_folder, exist_ok=True)
+# Video settings
+frames_per_second = 30  # Misty's actual streaming FPS
+duration_seconds = 5  # Record for 5 seconds
+frame_size = (640, 480)  # Video resolution
+video_filename = "misty_video.mp4"
 
-# Take 60 pictures per second for 5 seconds (total: 300 images)
-frames_per_second = 24
-duration_seconds = 5
-total_frames = frames_per_second * duration_seconds
+# Start Misty's video streaming
+misty.start_video_streaming(VIDEO_PORT)
+print("Misty video streaming started...")
 
-print("Starting capture...")
+async def record_video():
+    uri = f"ws://{MISTY_IP}:{VIDEO_PORT}"
+    async with websockets.connect(uri) as websocket:
+        print("Connected to Misty's video stream")
 
-for i in range(total_frames):
-    misty_filename = f"frame_{i:04d}.jpg"  # Saved in Misty's storage
-    local_filename = os.path.join(image_folder, misty_filename)  # Saved locally
+        # OpenCV video writer
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for MP4
+        video_writer = cv2.VideoWriter(video_filename, fourcc, frames_per_second, frame_size)
 
-    # Take picture and store it on Misty
-    response = misty.take_picture(base64=True, fileName=misty_filename, width=640, height=480)
+        start_time = time.time()
+        while time.time() - start_time < duration_seconds:
+            try:
+                frame_bytes = await websocket.recv()  # Get frame
+                np_arr = np.frombuffer(frame_bytes, np.uint8)
+                frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)  # Convert to OpenCV format
 
-    if response.status_code == 200:
-        image_data = response.json().get("result", {}).get("base64")
-        
-        if image_data:
-            # Decode and save locally
-            with open(local_filename, "wb") as img_file:
-                img_file.write(base64.b64decode(image_data))
-            print(f"Saved {local_filename}")
-        else:
-            print(f"Warning: No base64 image data for frame {i}")
-    else:
-        print(f"Failed to capture frame {i}: {response.text}")
+                if frame is not None:
+                    video_writer.write(frame)  # Write frame to video
+                    cv2.imshow("Misty Video Stream", frame)  # Show live video
+                    if cv2.waitKey(1) & 0xFF == ord('q'):  # Press 'q' to quit early
+                        break
+                else:
+                    print("Warning: Received empty frame")
+            except Exception as e:
+                print(f"Error receiving frame: {e}")
 
-    time.sleep(1 / frames_per_second)  # Maintain 60 FPS
+        video_writer.release()  # Save video file
+        cv2.destroyAllWindows()  # Close video window
 
-print("Capture complete!")
+        print(f"Video saved as {video_filename}")
+
+# Run video recording coroutine
+asyncio.run(record_video())
+
+# Stop Misty's video stream
+misty.stop_video_streaming()
+print("Misty video streaming stopped.")
