@@ -160,3 +160,33 @@ Section for my personal notes on the Python-SDK for Misty
 On https://lessons.mistyrobotics.com/python/python-lessons/lesson-3-create-memories, Challenge 1, the first argument should be base64, not 65
 
 On https://lessons.mistyrobotics.com/python-elements/misty-python-api/get-assets get_video_recording_list() should be get_video_recordings_list() instead
+
+```
+# Retrieve the list of recorded videos
+video_list_response = misty.get_video_recordings_list()
+
+if video_list_response.status_code == 200:
+    video_list = video_list_response.json().get("result", [])
+    
+    if video_list:
+        print("Videos stored on Misty:")
+        for video in video_list:
+            print("-", video)
+    else:
+        print("No videos found on Misty's storage.")
+else:
+    print(f"Failed to retrieve video list: {video_list_response.text}")
+```
+
+
+```
+# Retrieve and save the video
+response = misty.get_video_recording(misty_video_filename, base64=False)
+
+if response.status_code == 200:
+    with open(local_video_filename, "wb") as video_file:
+        video_file.write(response.content)
+    print(f"Video saved as {local_video_filename}")
+else:
+    print(f"Failed to retrieve video: {response.text}")
+```
