@@ -165,6 +165,9 @@ On https://lessons.mistyrobotics.com/python-elements/misty-python-api/get-assets
 ```
 misty.start_recording_video(fileName=misty_video_filename, mute=False, duration=5, width=1920, height=1080)
 ```
+
+I've tried ```width = 3840``` and ```height = 2160``` which works, but swapping it results in the video not saving.
+
 # Retrieve the list of recorded videos on Misty
 ```
 video_list_response = misty.get_video_recordings_list()
@@ -193,3 +196,4 @@ if response.status_code == 200:
 else:
     print(f"Failed to retrieve video: {response.text}")
 ```
+
