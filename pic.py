@@ -16,7 +16,7 @@ if not MISTY_IP:
 misty = Robot(MISTY_IP)
 
 # Take a picture
-response = misty.take_picture(base64=True, fileName="test.jpg", width=3940, height=2160)
+response = misty.take_picture(base64=True, fileName="test.jpg", width=4160, height=3120)
 
 #use 3940x2160 for 4k
 if response.status_code == 200:
