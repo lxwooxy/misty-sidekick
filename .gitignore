@@ -125,4 +125,10 @@ dmypy.json
 
 .env
 
+*.jpg
+
+*.mp4
+
+*.png
+
 Constants.py
