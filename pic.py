@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from mistyPy.Robot import Robot
 from datetime import datetime
 
-name = "charles"
+name = "ryan"
 # Load environment variables from .env file
 load_dotenv()
 
@@ -16,8 +16,9 @@ if not MISTY_IP:
 misty = Robot(MISTY_IP)
 
 # Take a picture
-response = misty.take_picture(base64=True, fileName="test.jpg", width=640, height=480)
+response = misty.take_picture(base64=True, fileName="test.jpg", width=3940, height=2160)
 
+#use 3940x2160 for 4k
 if response.status_code == 200:
     image_data = response.json().get("result", {}).get("base64")
     
