@@ -58,23 +58,41 @@ def save_clear_videos_on_misty():
         video_list = video_list_response.json().get("result", [])
         
         if video_list:
+            
             print("Videos stored on Misty:")
+            
             for video in video_list:
+                
                 print("-", video)
                 # Retrieve and save each video
                 response = misty.get_video_recording(video, base64=False)
 
                 if response.status_code == 200:
+                    
                     local_video_filename = f"{video}.mp4"
+                    
+                    if os.path.exists(local_video_filename):
+                        
+                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                        local_video_filename = f"{video}_{timestamp}.mp4"
+                        
                     with open(local_video_filename, "wb") as video_file:
+                        
                         video_file.write(response.content)
+                        
                     print(f"Video saved as {local_video_filename}")
                     misty.delete_video_recording(video)
+                    
                 else:
+                    
                     print(f"Failed to retrieve video {video}: {response.text}")
+                    
         else:
+            
             print("No videos found on Misty's storage.")
+            
     else:
+        
         print(f"Failed to retrieve video list: {video_list_response.text}")
 
 if __name__ == "__main__":
