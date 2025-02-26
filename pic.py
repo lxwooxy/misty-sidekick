@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from mistyPy.Robot import Robot
 from datetime import datetime
 
+name = "charles"
 # Load environment variables from .env file
 load_dotenv()
 
@@ -22,11 +23,11 @@ if response.status_code == 200:
     
     if image_data:
         # Decode the base64 image and save it as a file
-        with open("misty_image.jpg", "wb") as img_file:
-            file_path = "misty_image.jpg"
+        with open(f"{name}.jpg", "wb") as img_file:
+            file_path = f"{name}.jpg"
             if os.path.exists(file_path):
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                file_path = f"misty_image_{timestamp}.jpg"
+                file_path = f"{name}_{timestamp}.jpg"
 
             with open(file_path, "wb") as img_file:
                 img_file.write(base64.b64decode(image_data))

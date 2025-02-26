@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import glob
+import os
+from datetime import datetime
 
 # Get all images matching the pattern *_axis.jpg
 image_paths = sorted(glob.glob("*_axis.jpg"))
@@ -26,9 +28,15 @@ images_resized = [cv2.resize(img, (min_width, min_height)) for img in images]
 # Arrange images into a single row
 collage = np.hstack(images_resized)
 
+# Check if the file already exists
+output_filename = "collage.jpg"
+if os.path.exists(output_filename):
+    # Append the current date and time to the filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_filename = f"collage_{timestamp}.jpg"
 # Save the collage
-cv2.imwrite("collage.jpg", collage)
-print("Saved collage.jpg")
+cv2.imwrite(output_filename, collage)
+print(f"Collage saved as {output_filename}")
 
 # Display the collage
 cv2.imshow("Collage", collage)
