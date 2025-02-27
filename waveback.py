@@ -20,16 +20,46 @@ misty.display_image("e_DefaultContent.jpg")
 # Variables
 waving_now = False
 person_width_history = [0, 0, 0, 0]
+pose_estimation_running = False  # Track if pose estimation is running
+person_lost_count = 0  # Track how many frames a person is missing
+lost_threshold = 5  # Number of frames before stopping pose estimation
+
+
 
 # Event handler for analyzing the human pose
+last_wave_time = 0  # Track last time Misty waved
+
 def human_pose(data):
-    global waving_now
+    global waving_now, last_wave_time
+
+    # If no person was detected recently, ignore pose data
+    if not pose_estimation_running:
+        print("❌ Ignoring pose estimation because no person was detected recently.")
+        return  # Stop processing this frame
+
     print("Starting pose estimation")
-    
+
     keypoints = data["message"]["keypoints"]
-    print("Detected keypoints:", keypoints)
+
+    # Filter only high-confidence keypoints (confidence ≥ 0.6)
+    valid_keypoints = [k for k in keypoints if confident(k)]
+
+    if len(valid_keypoints) < 5:
+        print(f"❌ Not enough valid keypoints ({len(valid_keypoints)}). Ignoring detection.")
+        return  
+
+    # Store fresh keypoints
+    misty.last_pose_keypoints = keypoints
+    #print("✅ Detected keypoints:", keypoints)
+
+    # Prevent rapid wave retriggering
+    current_time = time.time()
+    if current_time - last_wave_time < 7:  # Add a delay before allowing another wave
+        print("🕒 Too soon to wave again. Ignoring detection.")
+        return
 
     if not waving_now:
+        print("👋 Checking for waving motion...")
         if confident(keypoints[7]) and confident(keypoints[5]) and confident(keypoints[9]):
             print("✅ Left hand detected")
             print(f"Left Shoulder Y: {keypoints[5]['imageY']}, Elbow Y: {keypoints[7]['imageY']}, Wrist Y: {keypoints[9]['imageY']}")
@@ -45,10 +75,28 @@ def human_pose(data):
             if elbow_wrist_check and wrist_above_elbow and valid_scale:
                 print("✅ Left arm motion validated")
                 waving_now = True
+                last_wave_time = current_time  # Update last wave time
                 wave_back("left")
+        if confident(keypoints[8]) and confident(keypoints[6]) and confident(keypoints[10]):
+            print("✅ Right hand detected")
+            print(f"Right Shoulder Y: {keypoints[6]['imageY']}, Elbow Y: {keypoints[8]['imageY']}, Wrist Y: {keypoints[10]['imageY']}")
+            elbow_wrist_check = pair_correlation(keypoints[8], keypoints[6])
+            wrist_above_elbow = pair_correlation(keypoints[6], keypoints[10])
+            valid_scale = scale_valid(keypoints[8], keypoints[6])
+        
+            print(f"🔹 Elbow above Shoulder? {elbow_wrist_check}")
+            print(f"🔹 Wrist above Elbow? {wrist_above_elbow}")
+            print(f"🔹 Scale Valid? {valid_scale}")
+            
+            if elbow_wrist_check and wrist_above_elbow and valid_scale:
+                print("✅ Right arm motion validated")
+                waving_now = True
+                last_wave_time = current_time
+                wave_back("right")
+
     
 
-# Functions helper for the human pose
+# Functions helper for the human pose, scale valid checks if the distance between two keypoints is greater than 60 pixels
 def scale_valid(keypoint_one, keypoint_two):
     x_offset = keypoint_one["imageX"] - keypoint_two["imageX"]
     y_offset = keypoint_one["imageY"] - keypoint_two["imageY"]
@@ -62,6 +110,13 @@ def pair_correlation(keypoint_one, keypoint_two):
 
 def wave_back(arm):
     global waving_now
+
+    # If pose estimation is not running, don't wave
+    if not pose_estimation_running:
+        #print("❌ No person detected. Ignoring wave.")
+        waving_now = False
+        return  
+
     if arm == "left":
         print("Waving back left")
         misty.play_audio("s_Acceptance.wav")
@@ -91,25 +146,51 @@ def wave_back(arm):
     misty.move_arms(random.randint(70, 89), random.randint(70, 89))
     time.sleep(1.5)
 
-    # Cooldown before detecting another wave
-    print("Cooldown started... Misty will not respond for 5 seconds.")
-    time.sleep(5)  # Wait 5 seconds before allowing a new wave detection
+    # print("Cooldown started... Misty will not respond for 5 seconds.")
+    # time.sleep(5)
     waving_now = False
+
 
 
 # Human pose estimation event
 def start_human_pose_estimation():
-    misty.start_pose_estimation(0.2, 0, 1)
-    misty.register_event(event_name="pose_estimation", event_type=Events.PoseEstimation, keep_alive=True, callback_function=human_pose)
+    global pose_estimation_running
+    if not pose_estimation_running:
+        print("🚀 Starting Pose Estimation")
+        misty.stop_pose_estimation()  # Ensure we stop before restarting
+        misty.start_pose_estimation(0.2, 0, 1)
 
-# Event handler for analyzing person detection
+        # Only register the event if it is not already registered
+        try:
+            misty.register_event(event_name="pose_estimation", event_type=Events.PoseEstimation, keep_alive=True, callback_function=human_pose)
+        except Exception as e:
+            print(f"⚠️ Pose estimation event already registered: {e}")
+
+        pose_estimation_running = True  # Set flag to indicate pose estimation is running
+
 def person_detection(data):
-    if data["message"]["confidence"] >= 0.6:
-        print("person detected")
-        
+    global waving_now, pose_estimation_running, person_lost_count
+
+    if data["message"]["confidence"] >= 0.75:
+        #print("✅ Person detected")
+        person_lost_count = 0  # Reset lost count
         width_of_human = data["message"]["imageLocationRight"] - data["message"]["imageLocationLeft"]
         person_width_history.pop(0)
         person_width_history.append(width_of_human)
+        start_human_pose_estimation()
+    else:
+        person_lost_count += 1
+        if person_lost_count >= lost_threshold:
+            #print("❌ No person detected for multiple frames. Stopping pose estimation.")
+            misty.last_pose_keypoints = []  # Clear stored keypoints
+            waving_now = False  # Prevent Misty from responding
+
+            if pose_estimation_running:
+                misty.stop_pose_estimation()
+                pose_estimation_running = False  # Reset flag to indicate pose estimation is stopped
+            person_lost_count = 0  # Reset lost counter
+
+
 
 # Person tracking event
 def start_person_tracking():
@@ -118,5 +199,4 @@ def start_person_tracking():
 
 # Start program
 start_person_tracking()
-start_human_pose_estimation()
 misty.keep_alive()

@@ -10,7 +10,8 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 # Create model (force CPU mode)
 model = SixDRepNet(gpu_id=-1)
 
-names = ["charles", "katherine", "lola", "lolahat","riyuan","ryan","ryanmask","shankar"]
+#names = ["charles", "katherine", "lola", "lolahat","riyuan","ryan","ryanmask","shankar"]
+names = ["jaime4k", "jaime4k_hat", "lola4k"]
 
 for name in names:
 
@@ -22,14 +23,14 @@ for name in names:
             continue
         
         pitch, yaw, roll = model.predict(img)
-        model.draw_axis(img, yaw, pitch, roll)
+        model.draw_axis(img, yaw, pitch, roll, size=500)
         
         # Save the processed image
         output_path = f'{name}_{i}_axis.jpg'
         cv2.imwrite(output_path, img)
         print(f"Saved {output_path}")
         
-        # cv2.imshow("test_window", img)
-        # cv2.waitKey(0)
+        cv2.imshow("test_window", img)
+        cv2.waitKey(0)
         
     cv2.destroyAllWindows()

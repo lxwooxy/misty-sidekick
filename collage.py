@@ -4,7 +4,9 @@ import glob
 import os
 from datetime import datetime
 
-names = ["charles", "katherine", "lola", "lolahat","riyuan","ryan","ryanmask","shankar"]
+#names = ["charles", "katherine", "lola", "lolahat","riyuan","ryan","ryanmask","shankar"]
+
+names = ["jaime4k", "lola4k"]
 
 for name in names:
 
