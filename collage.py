@@ -6,7 +6,11 @@ from datetime import datetime
 
 #names = ["charles", "katherine", "lola", "lolahat","riyuan","ryan","ryanmask","shankar"]
 
-names = ["jaime4k", "lola4k"]
+#names = ["jaime4k", "lola4k"]
+
+# names = ["lola", "shankar"]
+
+names = ["redacted"]
 
 for name in names:
 

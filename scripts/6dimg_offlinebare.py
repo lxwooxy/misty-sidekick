@@ -11,7 +11,9 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 model = SixDRepNet(gpu_id=-1)
 
 #names = ["charles", "katherine", "lola", "lolahat","riyuan","ryan","ryanmask","shankar"]
-names = ["jaime4k", "jaime4k_hat", "lola4k"]
+#names = ["jaime4k", "jaime4k_hat", "lola4k"]
+
+names = ["lola", "shankar"]
 
 for name in names:
 
