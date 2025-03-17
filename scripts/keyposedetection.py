@@ -1,13 +1,31 @@
+
+# Directory containing images
+image_dir = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/covfefe/Assets/images3"
 import cv2
 import numpy as np
 import os
 from ultralytics import YOLO
 
-# Define colors for different body parts
-COLOR_HEAD = (0, 255, 0)     # Green for head (nose, eyes, ears)
-COLOR_BODY = (0, 0, 255)     # Red for body (neck, shoulders, hips)
-COLOR_LIMBS = (128, 0, 128)  # Purple for arms and upper legs
-COLOR_ANKLES = (255, 0, 0)   # Blue for ankles
+# Define keypoint mappings with labels and colors
+KEYPOINT_MAPPING = {
+    0: {"label": "Nose", "color": (0, 255, 0)},
+    1: {"label": "Left Eye", "color": (0, 255, 0)},
+    2: {"label": "Right Eye", "color": (0, 255, 0)},
+    3: {"label": "Left Ear", "color": (0, 255, 0)},
+    4: {"label": "Right Ear", "color": (0, 255, 0)},
+    5: {"label": "Left Shoulder", "color": (0, 0, 255)},
+    6: {"label": "Right Shoulder", "color": (0, 0, 255)},
+    7: {"label": "Left Elbow", "color": (128, 0, 128)},
+    8: {"label": "Right Elbow", "color": (128, 0, 128)},
+    9: {"label": "Left Wrist", "color": (128, 0, 128)},
+    10: {"label": "Right Wrist", "color": (128, 0, 128)},
+    11: {"label": "Left Hip", "color": (0, 0, 255)},
+    12: {"label": "Right Hip", "color": (0, 0, 255)},
+    13: {"label": "Left Knee", "color": (128, 0, 128)},
+    14: {"label": "Right Knee", "color": (128, 0, 128)},
+    15: {"label": "Left Ankle", "color": (255, 0, 0)},
+    16: {"label": "Right Ankle", "color": (255, 0, 0)}
+}
 
 
 def draw_x_on_person(image, keypoints):
@@ -16,24 +34,14 @@ def draw_x_on_person(image, keypoints):
     
     for i, (x, y) in enumerate(keypoints):
         if x > 0 and y > 0:
-            # Determine color based on keypoint index
-            if i in [0, 1, 2, 3, 4]:  # Nose, eyes, ears -> Head
-                color = COLOR_HEAD
-            elif i in [5, 6, 11, 12]:  # Shoulders and hips -> Body
-                color = COLOR_BODY
-            elif i in [7, 8, 9, 10, 13, 14]:  # Arms and upper legs -> Limbs
-                color = COLOR_LIMBS
-            elif i in [15, 16]:  # Ankles -> Blue
-                color = COLOR_ANKLES
-            
+            color = KEYPOINT_MAPPING.get(i, {"color": (255, 255, 255)})["color"]
             cv2.line(image, (x - 10, y - 10), (x + 10, y + 10), color, 2)
             cv2.line(image, (x - 10, y + 10), (x + 10, y - 10), color, 2)
 
 # Load YOLOv8 Pose model
 model = YOLO("yolov8l-pose.pt")
 
-# Directory containing images
-image_dir = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/Misty-Python-SDK/imagetest"
+
 output_dir = os.path.join(image_dir, "processed")
 os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
 
