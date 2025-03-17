@@ -10,7 +10,7 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 model = SixDRepNet(gpu_id=-1)  # Ensure CUDA is not used
 
 # Load an image
-image_path = "test_5.jpg"
+image_path = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/Misty-Python-SDK/imagetest/processed_head/heads/group_20250304_160148_head_0.png"
 frame = cv2.imread(image_path)
 
 # Check if the image is loaded correctly
