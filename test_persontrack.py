@@ -45,6 +45,10 @@ def face_recognition(data):
         face_recognition_active = False
         print("🔴 Stopped and unregistered face recognition.")
 
+        # Restart keyphrase recognition
+        print("🔄 Restarting keyphrase recognition...")
+        start_listening()
+
     else:
         print(f"❌ Face detected, but not Georgina (Detected: {face_name})")
 
