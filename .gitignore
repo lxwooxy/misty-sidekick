@@ -134,9 +134,9 @@ dmypy.json
 Constants.py
 
 .DS_Store 
-groupimages
-headposeimagetest
-images
-jpg
-poseimages
-testimages
+groupimages/
+headposeimagetest/
+images/
+jpg/
+poseimages/
+testimages/
