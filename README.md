@@ -63,251 +63,175 @@ else:
 ```
 
 # 🎵 Misty Audio Files
-## Custom Sounds
+
+<details>
+<summary>Custom Sounds</summary>
+<br>
 
 ```capture_Dialogue.wav```
-
 ```newvoice1.mp3```
-
 ```voice.wav```
+</details>
 
-## Emotion Sounds
+<details>
+<summary>Emotion Sounds</summary>
+<br>
+
 ```s_Acceptance.wav```
-
 ```s_Amazement.wav```
-
 ```s_Amazement2.wav```
-
 ```s_Awe.wav```
-
 ```s_Awe2.wav```
-
 ```s_Awe3.wav```
-
 ```s_Boredom.wav```
-
 ```s_Ecstacy.wav```
-
 ```s_Ecstacy2.wav```
-
 ```s_Fear.wav```
-
 ```s_Joy.wav```
-
 ```s_Joy2.wav```
-
 ```s_Joy3.wav```
-
 ```s_Joy4.wav```
-
 ```s_Love.wav```
-
 ```s_Grief.wav```
-
 ```s_Grief2.wav```
-
 ```s_Grief3.wav```
-
 ```s_Grief4.wav```
-
 ```s_Rage.wav```
-
 ```s_Sadness.wav```
-
 ```s_Sadness2.wav```
-
 ```s_Sadness3.wav```
-
 ```s_Sadness4.wav```
-
 ```s_Sadness5.wav```
-
 ```s_Sadness6.wav```
-
 ```s_Sadness7.wav```
-
 ```s_Sleepy.wav```
-
 ```s_Sleepy2.wav```
-
 ```s_Sleepy3.wav```
-
 ```s_Sleepy4.wav```
-
 ```s_SleepySnore.wav```
-
 ```s_Loathing.wav```
-
 ```s_Disgust.wav```
-
 ```s_Disgust2.wav```
-
 ```s_Disgust3.wav```
-
 ```s_Disapproval.wav```
+</details>
 
-## Annoyance & Anger Sounds
+<details>
+<summary>Annoyance & Anger Sounds</summary>
+<br>
 
 ```s_Anger.wav```
-
 ```s_Anger2.wav```
-
 ```s_Anger3.wav```
-
 ```s_Anger4.wav```
-
 ```s_Annoyance.wav```
-
 ```s_Annoyance2.wav```
-
 ```s_Annoyance3.wav```
-
 ```s_Annoyance4.wav```
-
 ```s_Distraction.wav```
+</details>
 
-
-
-## Confusion Sounds
+<details>
+<summary>Confusion Sounds</summary>
+<br>
 
 ```s_DisorientedConfused.wav```
-
 ```s_DisorientedConfused2.wav```
-
 ```s_DisorientedConfused3.wav```
-
 ```s_DisorientedConfused4.wav```
-
 ```s_DisorientedConfused5.wav```
-
 ```s_DisorientedConfused6.wav```
+</details>
 
-
-## Phrases & Expressions
+<details>
+<summary>Phrases & Expressions</summary>
+<br>
 
 ```s_PhraseByeBye.wav```
-
 ```s_PhraseEvilAhHa.wav```
-
 ```s_PhraseHello.wav```
-
 ```s_PhraseNoNoNo.wav```
-
 ```s_PhraseOopsy.wav```
-
 ```s_PhraseOwOwOw.wav```
-
 ```s_PhraseOwwww.wav```
-
 ```s_PhraseUhOh.wav```
+</details>
 
-## System Sounds
+<details>
+<summary>System Sounds</summary>
+<br>
 
 ```s_SystemCameraShutter.wav```
-
 ```s_SystemFailure.wav```
-
 ```s_SystemSuccess.wav```
-
 ```s_SystemWakeWord.wav```
+</details>
 
-# Misty images
+# Misty Images
 
-## Expressions & Emotions
+<details>
+<summary>Expressions & Emotions</summary>
+<br>
 
 ```e_Admiration.jpg (480x272)```
-
 ```e_Aggressiveness.jpg (480x272)```
-
 ```e_Amazement.jpg (480x272)```
-
 ```e_Anger.jpg (480x272)```
-
 ```e_ApprehensionConcerned.jpg (480x272)```
-
 ```e_Contempt.jpg (480x272)```
-
 ```e_ContentLeft.jpg (480x272)```
-
 ```e_ContentRight.jpg (480x272)```
-
 ```e_DefaultContent.jpg (480x272)```
-
 ```e_Disgust.jpg (480x272)```
-
 ```e_Disoriented.jpg (480x272)```
-
 ```e_EcstacyHilarious.jpg (480x272)```
-
 ```e_EcstacyStarryEyed.jpg (480x272)```
-
 ```e_Fear.jpg (480x272)```
-
 ```e_Grief.jpg (480x272)```
-
 ```e_Joy.jpg (480x272)```
-
 ```e_Joy2.jpg (480x272)```
-
 ```e_JoyGoofy.jpg (480x272)```
-
 ```e_JoyGoofy2.jpg (480x272)```
-
 ```e_JoyGoofy3.jpg (480x272)```
-
 ```e_Love.jpg (480x272)```
-
 ```e_Rage.jpg (480x272)```
-
 ```e_Rage2.jpg (480x272)```
-
 ```e_Rage3.jpg (480x272)```
-
 ```e_Rage4.jpg (480x272)```
-
 ```e_RemorseShame.jpg (480x272)```
-
 ```e_Sadness.jpg (480x272)```
-
 ```e_Surprise.jpg (480x272)```
-
 ```e_Terror.jpg (480x272)```
-
 ```e_Terror2.jpg (480x272)```
-
 ```e_TerrorLeft.jpg (480x272)```
-
 ```e_TerrorRight.jpg (480x272)```
+</details>
 
-## Sleeping & Tired Expressions
+<details>
+<summary>Sleeping & Tired Expressions</summary>
+<br>
 
 ```e_Sleeping.jpg (480x272)```
-
 ```e_SleepingZZZ.jpg (480x272)```
-
 ```e_Sleepy.jpg (480x272)```
-
 ```e_Sleepy2.jpg (480x272)```
-
 ```e_Sleepy3.jpg (480x272)```
-
 ```e_Sleepy4.jpg (480x272)```
+</details>
 
-## System & Utility Images
+<details>
+<summary>System & Utility Images</summary>
+<br>
 
 ```e_SystemBlackScreen.jpg (480x272)```
-
 ```e_SystemBlinkLarge.jpg (480x272)```
-
 ```e_SystemBlinkStandard.jpg (480x272)```
-
 ```e_SystemCamera.jpg (480x272)```
-
 ```e_SystemFlash.jpg (480x272)```
-
 ```e_SystemGearPrompt.jpg (480x272)```
-
 ```e_SystemLogoPrompt.jpg (480x272)```
+</details>
+
 
 # Some basic commands for Misty reactions
 
@@ -334,4 +258,7 @@ Moving arms
 
 - create a ```.env``` file
 - Add a line ```MISTY_IP=XXX.XX.XX.X```
-- Replace ```XXX.XX.XX.X``` with your Misty's IP address (you can get the address by downloading the Misty app on your phone/tablet, or using the USB method. https://lessons.mistyrobotics.com/misty-lessons/connect-to-misty 
+- Replace ```XXX.XX.XX.X``` with your Misty's IP address.
+- You can get the address by downloading the Misty app on your phone/tablet, or using the USB method. https://lessons.mistyrobotics.com/misty-lessons/connect-to-misty 
+
+
