@@ -15,15 +15,20 @@ misty = Robot(MISTY_IP)
 misty.change_led(0, 255, 0)
 misty.display_image("e_DefaultContent.jpg")
 
+face_recognition_active = False  # Track whether face recognition is running
+
 def face_recognition(data):
-    """ Check if Misty recognizes Georgina. """
-    
-    #print(data)
+    """ Check if Misty recognizes Georgina and stop recognition after greeting. """
+    global face_recognition_active
+
+    if not face_recognition_active:
+        return  # Ignore event if recognition is already deactivated
+
     face_name = data["message"].get("personName", "")
 
     if face_name == "Georgina":
         print(f"✅ Recognized Georgina! ")
-        
+
         # Misty reacts
         misty.display_image("e_Joy.jpg")  # Show happy face
         misty.change_led(0, 255, 255)  # Change LED color
@@ -33,23 +38,47 @@ def face_recognition(data):
         time.sleep(3)
         misty.display_image("e_DefaultContent.jpg")
         misty.change_led(0, 255, 0)
+
+        # Stop face recognition and unregister event
+        misty.stop_face_recognition()
+        misty.unregister_event("face_recognition")  # Unregister event so it doesn't trigger again
+        face_recognition_active = False
+        print("🔴 Stopped and unregistered face recognition.")
+
     else:
         print(f"❌ Face detected, but not Georgina (Detected: {face_name})")
 
-
 def start_face_tracking():
     """ Start face recognition. """
-    misty.start_face_recognition()
+    global face_recognition_active
+
+    if not face_recognition_active:
+        print("🚀 Starting Face Recognition...")
+        misty.start_face_recognition()
+        misty.register_event(
+            event_name="face_recognition",
+            event_type=Events.FaceRecognition,
+            callback_function=face_recognition,
+            keep_alive=False  # Set to False so it doesn't persist forever
+        )
+        face_recognition_active = True
+
+def keyphrase_detected(data):
+    """ Callback for when Misty hears 'Hey Misty'. """
+    print("🗣️ Heard 'Hey Misty'! Starting face recognition...")
+    start_face_tracking()
+
+def start_listening():
+    """ Start keyphrase recognition for 'Hey Misty'. """
+    print("👂 Listening for 'Hey Misty'...")
+    misty.start_key_phrase_recognition()
     misty.register_event(
-        event_name="face_recognition",
-        event_type=Events.FaceRecognition,
-        callback_function=face_recognition,
+        event_name="keyphrase",
+        event_type=Events.KeyPhraseRecognized,
+        callback_function=keyphrase_detected,
         keep_alive=True
     )
 
 # Start program
-start_face_tracking()
-
-
-start_face_tracking()
+start_listening()
 misty.keep_alive()
