@@ -14,7 +14,7 @@ ___
 
 # Notes
 
-Past this point is for my personal notes and documentation on the Python-SDK for working with Misty
+Past this point is for my personal notes and documentation on the Python-SDK for working with Misty, harvested from Misty Lessons or the API documentation.
 
 On https://lessons.mistyrobotics.com/python/python-lessons/lesson-3-create-memories, Challenge 1, the first argument should be base64, not 65
 
@@ -308,3 +308,24 @@ else:
 ```e_SystemGearPrompt.jpg (480x272)```
 
 ```e_SystemLogoPrompt.jpg (480x272)```
+
+# Some basic commands for Misty reactions
+
+Default expression
+
+```misty.display_image("e_DefaultContent.jpg")```
+Joy
+
+```misty.display_image("e_Joy.jpg")```
+
+Playing audio
+```misty.play_audio("s_Joy.wav")```
+
+Moving Head
+```misty.move_head(20, -20, 0)  # Look up and to the left```
+
+Changing chest LED
+```misty.transition_led(0, 90, 0, 0, 255, 0, "Breathe", 800)```
+
+Moving arms
+```misty.move_arms(80, -89)```
