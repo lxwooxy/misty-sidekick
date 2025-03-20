@@ -14,7 +14,7 @@ ___
 
 # Notes
 
-Past this point is for my personal notes and documentation on the Python-SDK for working with Misty, harvested from Misty Lessons or the API documentation.
+Past this point is for my personal notes and documentation on the Python-SDK for working with Misty, harvested from Misty Lessons or the [API documentation.](https://docs.mistyrobotics.com/misty-ii/web-api/api-reference/)
 
 On https://lessons.mistyrobotics.com/python/python-lessons/lesson-3-create-memories, Challenge 1, the first argument should be base64, not 65
 
