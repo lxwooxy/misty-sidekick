@@ -329,3 +329,9 @@ Changing chest LED
 
 Moving arms
 ```misty.move_arms(80, -89)```
+
+# To run demo.py
+
+- create a ```.env``` file
+- Add a line ```MISTY_IP=XXX.XX.XX.X```
+- Replace ```XXX.XX.XX.X``` with your Misty's IP address (you can get the address by downloading the Misty app on your phone/tablet, or using the USB method. https://lessons.mistyrobotics.com/misty-lessons/connect-to-misty 
