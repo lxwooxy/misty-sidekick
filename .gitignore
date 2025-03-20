@@ -132,3 +132,11 @@ dmypy.json
 *.png
 
 Constants.py
+
+.DS_Store 
+groupimages
+headposeimagetest
+images
+jpg
+poseimages
+testimages
