@@ -5,7 +5,8 @@ from mistyPy.Events import Events
 import time
 import random
 import requests
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
+
 
 
 from dotenv import load_dotenv
@@ -43,11 +44,11 @@ index = VectorstoreIndexCreator(embedding=embedding).from_loaders([loader])
 
 
 def speech_captured(data):
-    print("speech_captured called with data:", data)  # ADD THIS
+    #print("speech_captured called with data:", data)  # ADD THIS
     if data["message"]["step"] == "CompletedASR":
         user_input = data["message"]["text"]
         process_user_input(user_input)
-        print("Recognized speech:", user_input)
+        #print("Recognized speech:", user_input)
 
 
 def process_user_input(user_input):
@@ -62,7 +63,9 @@ def process_user_input(user_input):
     higherVolume = "higher my volume"
     changeDisplay= "change my display"
     print(mistyOutput)
-    misty.speak_and_listen(mistyOutput)
+    #misty.speak_and_listen(mistyOutput)
+    misty.speak(mistyOutput)
+
     if moveForGesture1 in mistyOutput:
         misty.move_arms(-70, 50, 40, 40)
         time.sleep(1)
@@ -102,8 +105,8 @@ def recognized(data):
     misty.speak("Yay, Hi " + data["message"]["label"], 1)
     misty.stop_face_recognition()
     time.sleep(2)
-    misty.start_dialog()
-    misty.speak_and_listen("How can I help you today", utteranceId="required-for-callback")
+    # misty.start_dialog()
+    # misty.speak_and_listen("How can I help you today", utteranceId="required-for-callback")
 
 #If Misty is lifted she gets a bit touchy about that.
 def touch_sensor(data):
@@ -147,25 +150,43 @@ misty.register_event(event_name='face_recognition_event',
                      keep_alive=False)
 
 #misty.speak(index.query(query, llm=ChatOpenAI()))
-
-x = 4
-while (x > 3):
-    misty.display_image("e_DefaultContent.jpg")
-    misty.move_arms(30, 30, 40, 40)
-    misty.move_head(0, 0, 0, 85, None, None)
-    time.sleep(5)
-    misty.display_image("e_ContentLeft.jpg")
-    time.sleep(3)
-    misty.move_arms(20, 10, 40, 40)
-    time.sleep(2)
-    misty.move_head(0, -10, 0, 60, None, None)
-    time.sleep(5)
-    misty.display_image("e_ContentRight.jpg")
-    time.sleep(3)
-    misty.move_head(0, 10, 0, 60, None, None)
-    time.sleep(5)
-    misty.move_arms(10, 20, 40, 40)
     
 
-print("testing")
+def typed_input_mode():
+    print("Entering manual input mode. Type a command and press enter. Type 'exit' to quit.")
+    while True:
+        user_input = input(">>> ").strip()
+        if user_input.lower() in ["exit", "quit"]:
+            print("Exiting manual input mode.")
+            break
+        if user_input:
+            process_user_input(user_input)
+
+import threading
+
+def idle_animation():
+    while True:
+        misty.display_image("e_DefaultContent.jpg")
+        misty.move_arms(30, 30, 40, 40)
+        misty.move_head(0, 0, 0, 85, None, None)
+        time.sleep(5)
+        misty.display_image("e_ContentLeft.jpg")
+        time.sleep(3)
+        misty.move_arms(20, 10, 40, 40)
+        time.sleep(2)
+        misty.move_head(0, -10, 0, 60, None, None)
+        time.sleep(5)
+        misty.display_image("e_ContentRight.jpg")
+        time.sleep(3)
+        misty.move_head(0, 10, 0, 60, None, None)
+        time.sleep(5)
+        misty.move_arms(10, 20, 40, 40)
+
+# Start idle animations in the background
+threading.Thread(target=idle_animation, daemon=True).start()
+
+# Start manual typed input
+typed_input_mode()
+
+
 misty.keep_alive()
