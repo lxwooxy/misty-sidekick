@@ -231,17 +231,19 @@ def head_touched(data):
             misty.play_audio("s_Love.wav")  
             misty.display_image("e_Love.jpg")
             type = "front"
+            misty.move_arms(-90, -90)
 
         elif sensor_position == "HeadRight":
             misty.play_audio("s_Awe.wav")
             misty.display_image("e_Admiration.jpg")
-            misty.move_head(20, 20, 0)  # Look up and to the right
+            misty.move_head(-20, 20, -10)  # Look up and to the right
             type = "right"
+            
 
         elif sensor_position == "HeadLeft":
             misty.play_audio("s_Joy.wav")
             misty.display_image("e_Joy.jpg")
-            misty.move_head(20, -20, 0)  # Look up and to the left
+            misty.move_head(-20, 20, 10)  # Look up and to the right
             type = "left"
         
         elif sensor_position == "Chin":
@@ -253,8 +255,10 @@ def head_touched(data):
         # Wait 2 seconds before resetting Misty to normal
         time.sleep(2)
         misty.display_image("e_DefaultContent.jpg")  # Reset face
-        if type != "front":
-            misty.move_head(0, 0, 0)  # Reset head position
+        
+        misty.move_head(0, 0, 0)  # Reset head position
+        
+        misty.move_arms(90,90)
 
     processing_touch = False  # Unlock the event handler
 
