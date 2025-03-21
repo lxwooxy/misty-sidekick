@@ -229,9 +229,15 @@ def head_touched(data):
 
         if sensor_position in ["HeadFront", "HeadRear"]:
             misty.play_audio("s_Love.wav")  
+            #misty.play_audio("sound.wav")  
             misty.display_image("e_Love.jpg")
             type = "front"
             misty.move_arms(-90, -90)
+        elif sensor_position == "Scruff":
+            misty.play_audio("sound.wav")  
+            misty.display_image("e_EcstacyStarryEyed.jpg")
+            misty.move_arms(-90, -90)
+            time.sleep(5)
 
         elif sensor_position == "HeadRight":
             misty.play_audio("s_Awe.wav")
@@ -259,6 +265,8 @@ def head_touched(data):
         misty.move_head(0, 0, 0)  # Reset head position
         
         misty.move_arms(90,90)
+        misty.stop_audio()
+        time.sleep(1)
 
     processing_touch = False  # Unlock the event handler
 

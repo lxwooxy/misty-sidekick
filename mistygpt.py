@@ -62,6 +62,13 @@ def process_user_input(user_input):
     lowerVolume = "lower my volume"
     higherVolume = "higher my volume"
     changeDisplay= "change my display"
+    
+    playDomo = "play domo arrigato"
+    playSong = "I’ll play something catchy"
+    showVideo = "show me a video"
+    displayVideo = "display a video"
+
+
     print(mistyOutput)
     #misty.speak_and_listen(mistyOutput)
     misty.speak(mistyOutput)
@@ -99,6 +106,19 @@ def process_user_input(user_input):
         misty.display_image("e_EcstacyHilarious.jpg")
         time.sleep(3)
         misty.display_image("e_defaultcontent.jpg")
+    if playDomo in mistyOutput.lower():
+        misty.play_audio("domoarrigato.mp3")  # Replace with your actual audio file name
+        print("Playing Domo Arigato")
+
+    if playSong in mistyOutput.lower():
+        print("Playing a song1")
+        misty.play_audio("sound.mp3")  # Replace with any song you've uploaded
+        print("Playing a song")
+
+    if showVideo in mistyOutput.lower() or displayVideo in mistyOutput.lower():
+        misty.display_video("RickRoll.mp4")  # Replace with your actual video file
+        print("Displaying a video")
+
 
 def recognized(data):
     print(data)  
