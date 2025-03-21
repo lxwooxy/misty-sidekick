@@ -70,13 +70,11 @@ def wave_back():
         time.sleep(4)
 
 
-    time.sleep(1)
+    time.sleep(1.5)
     misty.display_image("e_DefaultContent.jpg")
     misty.transition_led(0, 40, 90, 0, 130, 255, "Breathe", 1200)
     misty.move_arms(random.randint(70, 89), random.randint(70, 89))
 
-    #print("calling start listening at the end of wave back")
-    #start_listening()
     restart_listening()
 
 
@@ -166,7 +164,7 @@ def start_listening():
     response = misty.start_key_phrase_recognition()
 
     print(f"🔧 start_key_phrase_recognition() Response: {response.json()}")  # Debug response
-
+    misty.change_led(255, 255, 255)
     misty.register_event(
         event_name="keyphrase",
         event_type=Events.KeyPhraseRecognized,
