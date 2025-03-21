@@ -58,7 +58,7 @@ def wave_back():
         misty.speak(fitness)
         misty.display_image("e_Rage3.jpg")
         misty.transition_led(255, 0, 0, 0, 0, 0, "Breathe", 800)
-        time.sleep(3)
+        time.sleep(4)
     
     else:
         print("Bee movie")
@@ -67,7 +67,7 @@ def wave_back():
         misty.speak(fitness)
         misty.display_image("e_Joy2.jpg")
         misty.transition_led(255, 255, 0, 0, 0, 0, "Breathe", 800)
-        time.sleep(3)
+        time.sleep(4)
 
 
     time.sleep(1)
@@ -185,7 +185,7 @@ def restart_listening():
     #     print("⚠️ Tried to unregister keyphrase event, but it may not have been registered.")
 
     #Stop keyphrase recognition (just in case it's still running)
-    misty.stop_key_phrase_recognition()
+    #misty.stop_key_phrase_recognition()
     
     # Reset the audio service to avoid needing a robot reboot
     misty.disable_audio_service()
@@ -196,6 +196,6 @@ def restart_listening():
 
 # Start program
 
-start_listening()
-#restart_listening()
+#start_listening()
+restart_listening()
 misty.keep_alive()
