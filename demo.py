@@ -233,11 +233,49 @@ def head_touched(data):
             misty.display_image("e_Love.jpg")
             type = "front"
             misty.move_arms(-90, -90)
+
         elif sensor_position == "Scruff":
             misty.play_audio("sound.wav")  
             misty.display_image("e_EcstacyStarryEyed.jpg")
-            misty.move_arms(-90, -90)
-            time.sleep(5)
+
+            dance_duration = 10  # seconds
+            interval = 0.6
+            start_time = time.time()
+
+            rgb_colors = [
+                {"red": 255, "green": 0, "blue": 0},     # Red
+                {"red": 0, "green": 255, "blue": 0},     # Green
+                {"red": 0, "green": 0, "blue": 255},     # Blue
+                {"red": 255, "green": 255, "blue": 0},   # Yellow
+                {"red": 0, "green": 255, "blue": 255},   # Cyan
+                {"red": 255, "green": 0, "blue": 255},   # Magenta
+                {"red": 255, "green": 255, "blue": 255}, # White
+            ]
+            color_index = 0
+
+            while time.time() - start_time < dance_duration:
+                # Tilt head left or right randomly
+                tilt = random.choice([-20, 20])
+                misty.move_head(0, tilt, 0, 70)
+
+                # Move arms randomly within safe range
+                left_arm = random.randint(-90, 90)
+                right_arm = random.randint(-90, 90)
+                misty.move_arms(left_arm, right_arm)
+
+                # Change chest LED color
+                color = rgb_colors[color_index % len(rgb_colors)]
+                misty.change_led(color["red"], color["green"], color["blue"])
+                color_index += 1
+
+                time.sleep(interval)
+
+            # Reset pose and LED
+            misty.move_head(0, 0, 0, 70)
+            misty.move_arms(0, 0)
+            misty.change_led(0, 0, 0)
+
+
 
         elif sensor_position == "HeadRight":
             misty.play_audio("s_Awe.wav")
