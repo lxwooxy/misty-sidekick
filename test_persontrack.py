@@ -20,9 +20,9 @@ face_recognition_active = False  # Track whether face recognition is running
 import random
 
 def wave_back():
-    armoptions = ["left", "right"]
+    armoptions = ["left", "right", "fitness", "bee"]
     
-    randarm = random.randint(0,1)
+    randarm = random.randint(0,3)
     
     arm = armoptions[randarm]
     
@@ -38,7 +38,7 @@ def wave_back():
         time.sleep(0.75)
         misty.move_arms(80, -89)
         time.sleep(0.75)
-    else:
+    elif arm == "right":
         print("Waving back right")
         #misty.play_audio("s_Awe.wav")
         misty.speak("Hello there!")
@@ -50,14 +50,34 @@ def wave_back():
         time.sleep(0.75)
         misty.move_arms(-89, 80)
         time.sleep(0.75)
+        
+    elif arm == "fitness":
+        print("The fitness")
+        #misty.play_audio("s_Awe.wav")
+        fitness = """The FitnessGram Pacer test is a multistage aerobic capacity test. Just kidding."""
+        misty.speak(fitness)
+        misty.display_image("e_Rage3.jpg")
+        misty.transition_led(255, 0, 0, 0, 0, 0, "Breathe", 800)
+        time.sleep(3)
+    
+    else:
+        print("Bee movie")
+        #misty.play_audio("s_Awe.wav")
+        fitness = "According to all known laws of aviation, there is no way that a bee should be able to fly."
+        misty.speak(fitness)
+        misty.display_image("e_Joy2.jpg")
+        misty.transition_led(255, 255, 0, 0, 0, 0, "Breathe", 800)
+        time.sleep(3)
 
-    time.sleep(1.5)
+
+    time.sleep(1)
     misty.display_image("e_DefaultContent.jpg")
     misty.transition_led(0, 40, 90, 0, 130, 255, "Breathe", 1200)
     misty.move_arms(random.randint(70, 89), random.randint(70, 89))
-    time.sleep(1.5)
-    print("calling start listening at the end of wave back")
-    start_listening()
+
+    #print("calling start listening at the end of wave back")
+    #start_listening()
+    restart_listening()
 
 
 def face_recognition(data):
@@ -135,11 +155,13 @@ def keyphrase_detected(data):
 
     #print("🗣️ Heard 'Hey Misty'! Starting face recognition...")
     wave_back()
-    print("wave completed")
 
 
 def start_listening():
     """ Start keyphrase recognition for 'Hey Misty'. """
+    print("start listening called ")
+    misty.stop_key_phrase_recognition()
+    print("stop keyphrase called ")
     print("👂 Starting keyphrase recognition...")
     response = misty.start_key_phrase_recognition()
 
@@ -157,20 +179,17 @@ def restart_listening():
     """ Fully reset Misty's ASR and restart keyphrase recognition. """
     print("🔄 Restarting keyphrase recognition (with audio service reset)...")
 
-    try:
-        misty.unregister_event("keyphrase")
-    except:
-        print("⚠️ Tried to unregister keyphrase event, but it may not have been registered.")
+    # try:
+    #     misty.unregister_event("keyphrase")
+    # except:
+    #     print("⚠️ Tried to unregister keyphrase event, but it may not have been registered.")
 
-    # Stop keyphrase recognition (just in case it's still running)
+    #Stop keyphrase recognition (just in case it's still running)
     misty.stop_key_phrase_recognition()
-    time.sleep(0.5)
     
     # Reset the audio service to avoid needing a robot reboot
     misty.disable_audio_service()
-    time.sleep(2)
     misty.enable_audio_service()
-    time.sleep(2)
 
     start_listening()
 
