@@ -57,6 +57,7 @@ def human_pose(data):
     if current_time - last_wave_time < 7:  # Add a delay before allowing another wave
         print("🕒 Too soon to wave again. Ignoring detection.")
         return
+    
 
     if not waving_now:
         print("👋 Checking for waving motion...")

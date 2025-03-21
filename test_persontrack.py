@@ -3,6 +3,11 @@ from mistyPy.Events import Events
 import os
 from dotenv import load_dotenv
 import time
+import random
+import threading
+
+face_timeout_timer = None  # Global timer object
+
 
 # Load Misty's IP from environment variables
 load_dotenv()
@@ -16,6 +21,47 @@ misty.change_led(0, 255, 0)
 misty.display_image("e_DefaultContent.jpg")
 
 face_recognition_active = False  # Track whether face recognition is running
+
+import random
+
+def wave_back():
+    armoptions = ["left", "right"]
+    
+    randarm = random.randint(0,1)
+    
+    arm = armoptions[randarm]
+    
+    if arm == "left":
+        print("Waving back left")
+        #misty.play_audio("s_Acceptance.wav")
+        misty.speak("Hey, you!")
+        misty.display_image("e_Joy2.jpg")
+        misty.transition_led(0, 90, 0, 0, 255, 0, "Breathe", 800)
+        misty.move_arms(80, -89)
+        time.sleep(1)
+        misty.move_arms(80, 0)
+        time.sleep(0.75)
+        misty.move_arms(80, -89)
+        time.sleep(0.75)
+    else:
+        print("Waving back right")
+        #misty.play_audio("s_Awe.wav")
+        misty.speak("Hello there!")
+        misty.display_image("e_Love.jpg")
+        misty.transition_led(90, 0, 0, 255, 0, 0, "Breathe", 800)
+        misty.move_arms(-89, 80)
+        time.sleep(1)
+        misty.move_arms(0, 80)
+        time.sleep(0.75)
+        misty.move_arms(-89, 80)
+        time.sleep(0.75)
+
+    time.sleep(1.5)
+    misty.display_image("e_DefaultContent.jpg")
+    misty.transition_led(0, 40, 90, 0, 130, 255, "Breathe", 1200)
+    misty.move_arms(random.randint(70, 89), random.randint(70, 89))
+    time.sleep(1.5)
+
 
 def face_recognition(data):
     """ Check if Misty recognizes Georgina and stop recognition after greeting. """
@@ -91,7 +137,7 @@ def keyphrase_detected(data):
     print(f"🔊 Keyphrase Event Data: {data}")  # Print raw event data
 
     print("🗣️ Heard 'Hey Misty'! Starting face recognition...")
-    start_face_tracking()
+    wave_back()
 
 
 
@@ -133,5 +179,6 @@ def restart_listening():
 
 
 # Start program
+#start_listening()
 start_listening()
 misty.keep_alive()
