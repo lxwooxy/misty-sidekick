@@ -3,11 +3,6 @@ from mistyPy.Events import Events
 import os
 from dotenv import load_dotenv
 import time
-import random
-import threading
-
-face_timeout_timer = None  # Global timer object
-
 
 # Load Misty's IP from environment variables
 load_dotenv()
@@ -34,7 +29,7 @@ def wave_back():
     if arm == "left":
         print("Waving back left")
         #misty.play_audio("s_Acceptance.wav")
-        misty.speak("Hey, you!")
+        misty.speak("Hey, human!")
         misty.display_image("e_Joy2.jpg")
         misty.transition_led(0, 90, 0, 0, 255, 0, "Breathe", 800)
         misty.move_arms(80, -89)
@@ -61,6 +56,8 @@ def wave_back():
     misty.transition_led(0, 40, 90, 0, 130, 255, "Breathe", 1200)
     misty.move_arms(random.randint(70, 89), random.randint(70, 89))
     time.sleep(1.5)
+    print("calling start listening at the end of wave back")
+    start_listening()
 
 
 def face_recognition(data):
@@ -136,9 +133,9 @@ def keyphrase_detected(data):
     """ Debug Misty's keyphrase recognition by printing raw data. """
     print(f"🔊 Keyphrase Event Data: {data}")  # Print raw event data
 
-    print("🗣️ Heard 'Hey Misty'! Starting face recognition...")
+    #print("🗣️ Heard 'Hey Misty'! Starting face recognition...")
     wave_back()
-
+    print("wave completed")
 
 
 def start_listening():
@@ -170,15 +167,16 @@ def restart_listening():
     time.sleep(0.5)
     
     # Reset the audio service to avoid needing a robot reboot
-    misty.stop_audio_service()
+    misty.disable_audio_service()
     time.sleep(2)
-    misty.start_audio_service()
+    misty.enable_audio_service()
     time.sleep(2)
 
     start_listening()
 
 
 # Start program
-#start_listening()
+
 start_listening()
+#restart_listening()
 misty.keep_alive()
