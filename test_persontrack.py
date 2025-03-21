@@ -50,6 +50,26 @@ def face_recognition(data):
 
     else:
         print(f"❌ Face detected, but not Georgina (Detected: {face_name})")
+        
+        # Misty reacts
+        misty.display_image("e_Joy.jpg")  # Show happy face
+        misty.change_led(0, 255, 255)  # Change LED color
+        misty.speak("Hi there!")  # Say hi
+
+        # Reset Misty’s face and LED after 3 seconds
+        time.sleep(3)
+        misty.display_image("e_DefaultContent.jpg")
+        misty.change_led(0, 255, 0)
+
+        # Stop face recognition and unregister event
+        misty.stop_face_recognition()
+        misty.unregister_event("face_recognition")  # Unregister event so it doesn't trigger again
+        face_recognition_active = False
+        print("🔴 Stopped and unregistered face recognition.")
+
+        # Restart keyphrase recognition
+        restart_listening()
+        
 
 def start_face_tracking():
     """ Start face recognition. """
@@ -70,22 +90,15 @@ def keyphrase_detected(data):
     """ Debug Misty's keyphrase recognition by printing raw data. """
     print(f"🔊 Keyphrase Event Data: {data}")  # Print raw event data
 
-    # Check if "Hey Misty" was actually detected
-    phrase_heard = data["message"].get("text", "Unknown")
-    print(f"🎤 Heard: {phrase_heard}")
+    print("🗣️ Heard 'Hey Misty'! Starting face recognition...")
+    start_face_tracking()
 
-    if phrase_heard.lower() == "hey misty":
-        print("🗣️ Heard 'Hey Misty'! Starting face recognition...")
-        start_face_tracking()
-    else:
-        print("❌ Misty did not recognize 'Hey Misty'.")
 
 
 def start_listening():
     """ Start keyphrase recognition for 'Hey Misty'. """
-    print("👂 Attempting to start keyphrase recognition...")
+    print("👂 Starting keyphrase recognition...")
     response = misty.start_key_phrase_recognition()
-    misty.start_speech_recognition()
 
     print(f"🔧 start_key_phrase_recognition() Response: {response.json()}")  # Debug response
 
@@ -95,15 +108,29 @@ def start_listening():
         callback_function=keyphrase_detected,
         keep_alive=True
     )
-    print("📡 Active Events:", misty.get_registered_events())
 
 
 def restart_listening():
-    """ Ensures Misty properly resets keyphrase recognition. """
-    print("🔄 Restarting keyphrase recognition...")
-    misty.unregister_event("keyphrase")  # Unregister first to ensure a clean restart
-    time.sleep(1)  # Small delay to allow reset
+    """ Fully reset Misty's ASR and restart keyphrase recognition. """
+    print("🔄 Restarting keyphrase recognition (with audio service reset)...")
+
+    try:
+        misty.unregister_event("keyphrase")
+    except:
+        print("⚠️ Tried to unregister keyphrase event, but it may not have been registered.")
+
+    # Stop keyphrase recognition (just in case it's still running)
+    misty.stop_key_phrase_recognition()
+    time.sleep(0.5)
+    
+    # Reset the audio service to avoid needing a robot reboot
+    misty.stop_audio_service()
+    time.sleep(2)
+    misty.start_audio_service()
+    time.sleep(2)
+
     start_listening()
+
 
 # Start program
 start_listening()
