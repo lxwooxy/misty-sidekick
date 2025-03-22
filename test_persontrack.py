@@ -175,25 +175,17 @@ def start_listening():
 
 def restart_listening():
     """ Fully reset Misty's ASR and restart keyphrase recognition. """
-    print("🔄 Restarting keyphrase recognition (with audio service reset)...")
-
-    # try:
-    #     misty.unregister_event("keyphrase")
-    # except:
-    #     print("⚠️ Tried to unregister keyphrase event, but it may not have been registered.")
-
-    #Stop keyphrase recognition (just in case it's still running)
-    #misty.stop_key_phrase_recognition()
+    print("🔄 Audio service reset)...")
     
     # Reset the audio service to avoid needing a robot reboot
     misty.disable_audio_service()
     misty.enable_audio_service()
-
+    misty.set_default_volume(50)
     start_listening()
 
 
 # Start program
-
-#start_listening()
-restart_listening()
+misty.set_default_volume(50)
+start_listening()
+#restart_listening()
 misty.keep_alive()
