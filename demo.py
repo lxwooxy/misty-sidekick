@@ -276,7 +276,6 @@ def head_touched(data):
             misty.change_led(0, 0, 0)
 
 
-
         elif sensor_position == "HeadRight":
             misty.play_audio("s_Awe.wav")
             misty.display_image("e_Admiration.jpg")

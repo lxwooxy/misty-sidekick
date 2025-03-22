@@ -112,7 +112,7 @@ def process_user_input(user_input):
 
     if playSong in mistyOutput.lower():
         print("Playing a song1")
-        misty.play_audio("sound.mp3")  # Replace with any song you've uploaded
+        misty.play_audio("sound.wav")  # Replace with any song you've uploaded
         print("Playing a song")
 
     if showVideo in mistyOutput.lower() or displayVideo in mistyOutput.lower():
