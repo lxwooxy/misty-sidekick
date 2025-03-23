@@ -192,7 +192,6 @@ def person_detection(data):
             person_lost_count = 0  # Reset lost counter
 
 
-
 # Person tracking event
 def start_person_tracking():
     misty.start_object_detector(0.5, 0, 15)
@@ -279,8 +278,7 @@ def head_touched(data):
             misty.play_audio("s_Awe.wav")
             misty.display_image("e_Admiration.jpg")
             misty.move_head(-20, 20, -10)  # Look up and to the right
-
-            
+ 
 
         elif sensor_position == "HeadLeft":
             misty.play_audio("s_Joy.wav")
