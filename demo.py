@@ -221,17 +221,16 @@ def head_touched(data):
         return
     last_touch_time = current_time  # Update last touch time
     processing_touch = True  # Lock the event handler
-    type = ""
+
     # Check if the head is touched
     if message["isContacted"] and message["sensorId"] == "cap":
         sensor_position = message["sensorPosition"]
         print(f"🎵 Misty's head ({sensor_position}) was touched!")
 
-        if sensor_position in ["HeadFront", "HeadRear"]:
+        if sensor_position in ["HeadFront", "HeadBack"]:
             misty.play_audio("s_Love.wav")  
             #misty.play_audio("sound.wav")  
             misty.display_image("e_Love.jpg")
-            type = "front"
             misty.move_arms(-90, -90)
 
         elif sensor_position == "Scruff":
@@ -280,20 +279,20 @@ def head_touched(data):
             misty.play_audio("s_Awe.wav")
             misty.display_image("e_Admiration.jpg")
             misty.move_head(-20, 20, -10)  # Look up and to the right
-            type = "right"
+
             
 
         elif sensor_position == "HeadLeft":
             misty.play_audio("s_Joy.wav")
             misty.display_image("e_Joy.jpg")
             misty.move_head(-20, 20, 10)  # Look up and to the right
-            type = "left"
+
         
         elif sensor_position == "Chin":
             misty.play_audio("s_Joy2.wav")
             misty.display_image("e_Amazement.jpg")
             misty.move_head(-10, 0, 0)  # Look up and to the left
-            type = "chin"
+
 
         # Wait 2 seconds before resetting Misty to normal
         time.sleep(2)
