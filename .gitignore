@@ -131,14 +131,20 @@ dmypy.json
 
 *.png
 
+*.wav
+
 constants.py
 data.txt
+Data.txt
 
 .DS_Store 
 groupimages/
+zgroupimages/
 headposeimagetest/
 images/
 jpg/
 poseimages/
 testimages/
 scripts/
+
+test_*.py
