@@ -8,7 +8,10 @@ from dotenv import load_dotenv
 
 # Load Misty's IP from environment variables
 load_dotenv()
-MISTY_IP = os.getenv("MISTY_IP")
+
+#MISTY_IP = os.getenv("MISTY_IP")
+MISTY_IP = os.getenv("MISTY_IP_2")
+
 if not MISTY_IP:
     raise ValueError("MISTY_IP environment variable is not set.")
 
@@ -228,6 +231,7 @@ def head_touched(data):
 
         if sensor_position in ["HeadFront", "HeadBack"]:
             misty.play_audio("s_Love.wav")  
+            misty.speak("Hel")
             #misty.play_audio("sound.wav")  
             misty.display_image("e_Love.jpg")
             misty.move_arms(-90, -90)
