@@ -1,15 +1,28 @@
-# Python SDK
+# 🤖 misty-sidekick
 
-Python library to work with the  Misty robot. Currently in BETA. It is designed to follow a Pythonicated version of the naming convention within the [API Explorer](http://sdk.mistyrobotics.com/api-explorer/index.html).
-There is a method generator built in to update the built in methods and available events, this works on all current Misty II product versions.
+A Python library for working with the Misty II robot. This is my personal clone and adaptation of the original Misty SDK, tweaked to follow Pythonic conventions and include extra helper functions, documentation, and notes. There is a method generator built in to update the built in methods and available events, this works on all current Misty II product versions. It’s designed to make scripting for Misty a bit smoother and more fun.
 
-## Requirements
+**⚠️ Currently in BETA** — things are evolving, and some features may shift around.
 
-python >= 3.8
+---
 
-requests>=2.25.1<br>
-websocket-client<=0.57.0<br>
-yapf>=0.30.0
+## 📦 Requirements
+
+- `python >= 3.8`
+- `requests >= 2.25.1`
+- `websocket-client <= 0.57.0`
+- `yapf >= 0.30.0` (for code formatting)
+
+---
+
+<!-- ## ⚙️ Setup
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/lxwooxy/misty-sidekick.git
+   cd misty-sidekick
+``` -->
+
 ___
 
 # Notes
@@ -260,5 +273,3 @@ Moving arms
 - Add a line ```MISTY_IP=XXX.XX.XX.X```
 - Replace ```XXX.XX.XX.X``` with your Misty's IP address.
 - You can get the address by downloading the Misty app on your phone/tablet, or using the USB method. https://lessons.mistyrobotics.com/misty-lessons/connect-to-misty 
-
-
