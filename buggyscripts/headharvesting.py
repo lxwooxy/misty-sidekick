@@ -17,12 +17,9 @@ model = YOLO("yolov8l-pose.pt")
 
 # Directory containing images
 image_dir = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/misty-sidekick/zgroupimages"
-output_dir = os.path.join(image_dir, "processed_head")
-os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
+head_output_dir = os.path.join(image_dir, "processed_head")
+os.makedirs(head_output_dir, exist_ok=True)  # Ensure output directory exists
 
-# Directory for saving cropped head images
-head_output_dir = os.path.join(output_dir, "heads")
-os.makedirs(head_output_dir, exist_ok=True)
 
 def determine_pose_type(keypoints):
     has_nose = keypoints[NOSE][0] > 0
