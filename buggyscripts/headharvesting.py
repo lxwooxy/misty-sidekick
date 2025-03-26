@@ -16,7 +16,7 @@ HEAD_KEYPOINTS = [NOSE, LEFT_EYE, RIGHT_EYE, LEFT_EAR, RIGHT_EAR]
 model = YOLO("yolov8l-pose.pt")
 
 # Directory containing images
-image_dir = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/covfefe/Assets/images3"
+image_dir = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/misty-sidekick/zgroupimages"
 output_dir = os.path.join(image_dir, "processed_head")
 os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
 
