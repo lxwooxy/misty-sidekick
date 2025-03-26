@@ -3,68 +3,87 @@ import torch
 
 import sys
 import os
-# sys.path.append(os.path.abspath(os.path.join(__file__, "../../..", "6DRepNet")))
 
 from sixdrepnet import SixDRepNet
 
 import numpy as np
-
-# Select device (MPS for Apple Silicon, otherwise CPU)
-#device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-device = torch.device("cpu")
-
-
-# Create model (force CPU mode)
-model = SixDRepNet(gpu_id=-1)  # Ensure CUDA is not used
-
-# Load an image
-image_path = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/misty-sidekick/headposeimagetest/processed_head/heads/group_20250304_160148_head_0.png"
-frame = cv2.imread(image_path)
-
-# Check if the image is loaded correctly
-if frame is None:
-    raise IOError(f"Cannot open image file: {image_path}")
-
-# Rotate the image by 90 degrees
-frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-
-# Convert the frame to RGB
-frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-# Predict head pose
-pitch, yaw, roll = model.predict(frame_rgb)
+import pandas as pd
 
 # Function to classify head pose
 def classify_head_pose(yaw, pitch):
     if abs(yaw) < 15:
-        return "Facing Center"
+        return "Frontal"
     elif yaw < -15:
-        return "Facing Right"
+        return "Right"
     elif yaw > 15:
-        return "Facing Left"
+        return "Left"
     elif pitch > 20:
-        return "Facing Away"
+        return "Away"
     return "Unknown"
 
-# Classify head pose
-pose_label = classify_head_pose(yaw, pitch)
+output_folder = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/misty-sidekick/buggyscripts/poseaxis"
+os.makedirs(output_folder, exist_ok=True)
 
-# Draw the axis at the center of the image
-h, w, _ = frame.shape
-face_center = (w // 2, h // 2)
-model.draw_axis(frame, yaw, pitch, roll)
+# Create csv to store head pose data, append if it already exists 
+# Filename, yaw, pitch, roll
+csv = os.path.join(output_folder, "head_pose_predictions.csv")
+if not os.path.exists(csv):
+    df = pd.DataFrame(columns=["Filename", "Yaw", "Pitch", "Roll", "Pose"])
+    df.to_csv(csv, index=False)
+else:
+    df = pd.read_csv(csv)
+    
 
-# Display classification label
-cv2.putText(frame, f"Pose: {pose_label}", (50, 50),
-            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
-# Save the image with the pose overlay
-output_path = image_path.replace(".png", "_poseaxis.png")
-cv2.imwrite(output_path, frame)
-print(f"Image saved to: {output_path}")
+# Select device (MPS for Apple Silicon, otherwise CPU)
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
-# # Display the image with the pose overlay
-# cv2.imshow("Image - Head Pose Estimation", frame)
-# # Wait for a key press and close window
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+# Create model (force CPU mode)
+model = SixDRepNet(gpu_id=-1)  # Ensure CUDA is not used
+
+# Load images from file
+file_path = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/misty-sidekick/headposeimagetest/processed_head/heads/"
+image_files = os.listdir(file_path)
+
+#remove any non-image files [.png, .jpg, .jpeg]
+image_files = [file for file in image_files if file.endswith(('.png', '.jpg', '.jpeg'))]
+
+for image_file in image_files:
+    image_path = os.path.join(file_path, image_file)
+    frame = cv2.imread(image_path)
+
+    # Check if the image is loaded correctly
+    if frame is None:
+        raise IOError(f"Cannot open image file: {image_path}")
+
+    # Rotate the image by 90 degrees
+    frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+
+    # Convert the frame to RGB
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    # Predict head pose
+    pitch, yaw, roll = model.predict(frame_rgb)
+    
+    # Classify head pose
+    pose_label = classify_head_pose(yaw, pitch)
+
+    # Save the head pose data to the CSV file
+    filename = os.path.basename(image_path)
+    new_row = pd.DataFrame([{"Filename": filename, "Yaw": yaw[0], "Pitch": pitch[0], "Roll": roll[0], "Pose": pose_label}])
+    df = pd.concat([df, new_row], ignore_index=True)
+    df.to_csv(csv, index=False)
+
+    # Draw the axis at the center of the image
+    h, w, _ = frame.shape
+    face_center = (w // 2, h // 2)
+    model.draw_axis(frame, yaw, pitch, roll)
+
+    # Save the image with the pose overlay
+    image_name = os.path.basename(image_path)
+    output_path = os.path.join(output_folder, image_name[:-4] + "_poseaxis.png")
+
+    cv2.imwrite(output_path, frame)
+    
+    print(f"Image saved to: {output_path}")
+
