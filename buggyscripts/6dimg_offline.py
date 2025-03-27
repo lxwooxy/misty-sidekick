@@ -42,7 +42,7 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 model = SixDRepNet(gpu_id=-1)  # Ensure CUDA is not used
 
 # Load images from file
-file_path = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/misty-sidekick/headposeimagetest/processed_head/heads/"
+file_path = "/Users/georginawoo/Desktop/HUNTER/TIER/MISTY/misty-sidekick/zgroupimages/heads"
 image_files = os.listdir(file_path)
 
 #remove any non-image files [.png, .jpg, .jpeg]
