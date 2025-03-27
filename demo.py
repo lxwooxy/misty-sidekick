@@ -9,8 +9,8 @@ from dotenv import load_dotenv
 # Load Misty's IP from environment variables
 load_dotenv()
 
-#MISTY_IP = os.getenv("MISTY_IP")
-MISTY_IP = os.getenv("MISTY_IP_2")
+MISTY_IP = os.getenv("MISTY_IP")
+#MISTY_IP = os.getenv("MISTY_IP_2")
 
 if not MISTY_IP:
     raise ValueError("MISTY_IP environment variable is not set.")
