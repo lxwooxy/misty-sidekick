@@ -15,18 +15,52 @@ from ultralytics import YOLO
 # Load YOLOv8 Pose model
 model = YOLO("yolov8l-pose.pt")
 
-def draw_yolo_pose(frame, result):
-    """Draw YOLO pose skeleton on the frame."""
+def draw_yolo_pose(frame, result, confidence_threshold=0.7):
+    """Draw YOLO pose skeleton with confidence filtering."""
     if result is None or result.keypoints is None:
         return frame
-    
-    # Draw keypoints
-    for kp in result.keypoints.xy:
+
+    HEAD_KEYPOINTS = [0, 1, 2, 3, 4]
+    JOINTS = [7, 9, 8, 10, 13, 15, 14, 16]
+
+    skeleton = [
+        (5, 6),   # Shoulders
+        (5, 7), (7, 9),  # Left Arm
+        (6, 8), (8, 10), # Right Arm
+        (11, 12),        # Hips
+        (5, 11), (6, 12),# Torso
+        (11, 13), (13, 15), # Left Leg
+        (12, 14), (14, 16)  # Right Leg
+    ]
+
+    for kp in result.keypoints.data:
         kp = kp.cpu().numpy()
-        for i, (x, y) in enumerate(kp):
-            cv2.circle(frame, (int(x), int(y)), 5, (0, 255, 0), -1)
+
+        # Draw lines (only if both points are confident)
+        for i, j in skeleton:
+            if kp[i][2] > confidence_threshold and kp[j][2] > confidence_threshold:
+                pt1 = (int(kp[i][0]), int(kp[i][1]))
+                pt2 = (int(kp[j][0]), int(kp[j][1]))
+                cv2.line(frame, pt1, pt2, (0, 255, 255), 2)
+
+        # Draw keypoints
+        for idx, (x, y, conf) in enumerate(kp):
+            if conf < confidence_threshold:
+                continue  # Skip low confidence keypoints
+
+            if idx in HEAD_KEYPOINTS:
+                color = (0, 255, 0)  # Green
+            elif idx in JOINTS:
+                color = (0, 0, 255)  # Red
+            else:
+                color = (255, 0, 0)  # Blue
+
+            cv2.circle(frame, (int(x), int(y)), 5, color, -1)
 
     return frame
+
+
+
 
 
 # Load Misty's IP from environment variables
@@ -345,7 +379,7 @@ misty.register_event(
 def snapshot_stream_with_yolo():
     try:
         while True:
-            response = misty.take_picture(base64=True, width=320, height=240)
+            response = misty.take_picture(base64=True, width=640, height=480)
 
             if response.status_code == 200:
                 image_data = response.json().get("result", {}).get("base64")
