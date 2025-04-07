@@ -234,7 +234,8 @@ def head_touched(data):
             #misty.play_audio("sound.wav")  
             misty.display_image("e_Love.jpg")
             misty.move_arms(-90, -90)
-
+            misty.change_led(255, 255, 0)  # Reset LED color
+            
         elif sensor_position == "Scruff":
             misty.play_audio("sound.wav")  
             misty.display_image("e_EcstacyStarryEyed.jpg")
@@ -274,25 +275,26 @@ def head_touched(data):
             # Reset pose and LED
             misty.move_head(0, 0, 0, 70)
             misty.move_arms(0, 0)
-            misty.change_led(0, 0, 0)
+
 
 
         elif sensor_position == "HeadRight":
             misty.play_audio("s_Awe.wav")
             misty.display_image("e_Admiration.jpg")
             misty.move_head(-20, 20, -10)  # Look up and to the right
- 
+            misty.change_led(255, 255, 0)  # Reset LED color
 
         elif sensor_position == "HeadLeft":
             misty.play_audio("s_Joy.wav")
             misty.display_image("e_Joy.jpg")
             misty.move_head(-20, 20, 10)  # Look up and to the right
-
+            misty.change_led(255, 255, 0)  # Reset LED color
         
         elif sensor_position == "Chin":
             misty.play_audio("s_Joy2.wav")
             misty.display_image("e_Amazement.jpg")
             misty.move_head(-10, 0, 0)  # Look up and to the left
+            misty.change_led(255, 255, 0)  # Reset LED color
 
 
         # Wait 2 seconds before resetting Misty to normal
@@ -304,7 +306,8 @@ def head_touched(data):
         misty.move_arms(90,90)
         misty.stop_audio()
         time.sleep(1)
-
+        
+    misty.change_led(0, 255, 0)  # Reset LED color to green
     processing_touch = False  # Unlock the event handler
     
 def bumper_touched(data):
@@ -315,7 +318,7 @@ def bumper_touched(data):
     
     if message["isContacted"]:
         misty.play_audio("miku.mp3")  
-        misty.display_image("e_EcstacyStarryEyed.jpg")
+        misty.display_image("e_Joy.jpg")
 
         miku_duration = 10  # seconds
         interval = 0.5
@@ -334,23 +337,27 @@ def bumper_touched(data):
 
             if step == 0 and elapsed > 1:
                 # "One"
+                misty.display_image("e_ContentRight.jpg")
                 misty.move_arms(45, -45)
                 misty.move_head(-10, 20, -10, 70)
                 step += 1
             elif step == 1 and elapsed > 2:
                 # "Two"
+                misty.display_image("e_ContentLeft.jpg")
                 misty.move_arms(-45, 45)
                 misty.move_head(-10, -20, 10, 70)
                 step += 1
             elif step == 2 and elapsed > 3:
                 # "Three"
+                misty.display_image("e_ContentRight.jpg")
                 misty.move_arms(0, 0)
                 misty.move_head(0, 0, 0, 70)
                 step += 1
             elif step == 3 and elapsed > 3.5:
                 # "MIKU MIKU BEAM!"
+                misty.display_image("e_EcstacyStarryEyed.jpg")
                 misty.move_arms(-90, -90)
-                misty.change_led(255, 105, 180)  # Hot pink
+                misty.change_led(0, 255, 20)  # Green
                 misty.drive(0, 100)  # Spin left!
                 time.sleep(5)
                 step += 1
@@ -466,7 +473,7 @@ def start_keyboard_control():
         listener.join()
 
 # Run in background thread
-# threading.Thread(target=start_keyboard_control, daemon=True).start()
+threading.Thread(target=start_keyboard_control, daemon=True).start()
 
 
 misty.keep_alive()
