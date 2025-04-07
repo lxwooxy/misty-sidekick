@@ -389,26 +389,30 @@ def snapshot_stream_with_yolo():
                     frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
                     if frame is not None:
+                        # Make a copy BEFORE drawing
+                        frame_original = frame.copy()
+
                         # ---- YOLO Pose Estimation ----
                         results = model(frame)
 
                         for result in results:
                             frame = draw_yolo_pose(frame, result)
 
+                        # ---- Concatenate side by side ----
+                        combined = np.hstack((frame_original, frame))
+
                         # ---- Display ----
-                        cv2.imshow("Misty + YOLO Pose Stream (Press Q to exit)", frame)
+                        cv2.imshow("Left = Original | Right = Overlay | Press Q to exit", combined)
                         key = cv2.waitKey(1) & 0xFF
                         if key == ord('q'):
                             print("🔴 Q pressed, exiting stream.")
                             break
 
-            time.sleep(0.33)  # ~3 FPS safe limit
 
     except KeyboardInterrupt:
         print("🔴 Ctrl+C detected, exiting.")
     finally:
         cv2.destroyAllWindows()
-
 
 
 # Start program
