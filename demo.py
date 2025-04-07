@@ -231,8 +231,6 @@ def head_touched(data):
 
         if sensor_position in ["HeadFront", "HeadBack"]:
             misty.play_audio("s_Love.wav")  
-            misty.speak("Hel")
-            #misty.play_audio("sound.wav")  
             misty.display_image("e_Love.jpg")
             misty.move_arms(-90, -90)
 
@@ -308,11 +306,40 @@ def head_touched(data):
 
     processing_touch = False  # Unlock the event handler
 
+def bumper_touched(data):
+    """Plays a sound and changes Misty's expression when the bumper is touched."""
+    message = data["message"]
+    print(f"Misty's bumper was touched!")
+    #sensor id in ["bfr", "bfl", "brr", "brl"]
+    print(f"Sensor ID: {message['sensorId']}")
+    
+    
+    if message["isContacted"]:
+        #misty.play_audio("s_Love.wav")  
+        #misty.speak("Hello")
+        misty.display_image("e_Love.jpg")
+        misty.move_arms(-90, -90)
+        time.sleep(1)
+
+    # Reset pose
+    misty.move_arms(70, 70)  # Reset arms
+    misty.stop_audio()  # Stop any audio playing
+    misty.display_image("e_DefaultContent.jpg")  # Reset face
+    time.sleep(1)
+    
 # Register TouchSensor event
 misty.register_event(
     event_name="head_touch",
     event_type=Events.TouchSensor,
     callback_function=head_touched,
+    keep_alive=True
+)
+
+# Register Bumper event
+misty.register_event(
+    event_name="bumper_touch",
+    event_type=Events.BumpSensor,
+    callback_function=bumper_touched,
     keep_alive=True
 )
 

@@ -74,8 +74,6 @@ def draw_yolo_pose(frame, result, confidence_threshold=0.7):
 
 
 
-
-
 # Load Misty's IP from environment variables
 load_dotenv()
 
