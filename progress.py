@@ -296,7 +296,6 @@ def head_touched(data):
             misty.move_head(-10, 0, 0)  # Look up and to the left
             misty.change_led(255, 255, 0)  # Reset LED color
 
-
         # Wait 2 seconds before resetting Misty to normal
         time.sleep(2)
         misty.display_image("e_DefaultContent.jpg")  # Reset face
