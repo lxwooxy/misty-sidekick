@@ -378,6 +378,7 @@ def bumper_touched(data):
         misty.change_led(0, 0, 0)
         misty.display_image("e_DefaultContent.jpg")
 
+    #ADD A LOCK SO THAT WE IGNORE THE BUMPER TOUCH EVENT WHILE MISTY IS DANCING
     
 # Register TouchSensor event
 misty.register_event(
