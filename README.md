@@ -6,6 +6,19 @@ A Python library for working with the Misty II robot. This is my personal clone 
 
 ---
 
+
+## Attribution
+
+This project is maintained by [Georgina Woo](https://github.com/lxwooxy) and includes scripts, helper tools, and documentation written for research using the Misty II robot.
+
+While this code is built on top of the official Misty API and SDK (which I did not create), everything in this repo reflects my own work to make robot scripting easier and more Pythonic—especially for use in robotics research and experimentation.
+
+If you use any part of this repo—scripts, structure, or examples—in your own projects or research, **please credit appropriately**.
+
+Thanks for supporting 💙
+
+---
+
 ## 📦 Requirements
 
 - `python >= 3.8`

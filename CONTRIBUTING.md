@@ -166,10 +166,14 @@ Edit
 
 No pressure to be perfect—this repo is for experimenting!
 
+
 ---
 
-## 🤷 A Final Word
+## 🙌 Credit & Attribution
 
-This isn’t an official Misty Robotics repo. It’s just me figuring out how to make Misty do fun stuff using Python. If that’s your vibe too, you’re welcome here. 🛠️💙
+The scripts and code in this repository are part of an independent research project using Misty II. While the SDK itself is from Misty Robotics, this repo includes original work to make it easier to control and experiment with Misty using Python.
 
-— [@lxwooxy](https://github.com/lxwooxy)
+If you build on these tools, a shoutout or link back is appreciated!
+
+— Georgina Woo [@lxwooxy](https://github.com/lxwooxy)
+
