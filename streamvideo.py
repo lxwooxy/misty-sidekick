@@ -46,23 +46,22 @@ def record_until_s():
 
 
 
-def record():
+def record(d):
 
     # Video filename on Misty's storage
     misty_video_filename = "test"
     width = 3840
     height = 2160
 
-    # Start recording (5 seconds)
-    #misty.start_recording_video(misty_video_filename, 5)
-    misty.start_recording_video(fileName=misty_video_filename, mute=False, duration=5, width=width, height=height)
-    
+    duration = d
+    misty.start_recording_video(fileName=misty_video_filename, mute=False, duration=duration, width=width, height=height)
 
     print("Recording video for 5 seconds...")
     
-    
-    time.sleep(5)
 
+    time.sleep(duration)
+
+    print(f"Stopping Recording")
     # Stop recording
     misty.stop_recording_video()
 
@@ -85,6 +84,7 @@ def check_video_list():
         print(f"Failed to retrieve video list: {video_list_response.text}")
         
 def save_clear_videos_on_misty():   
+    print("Saving videos")
     # Retrieve the list of recorded videos
     video_list_response = misty.get_video_recordings_list()
     
@@ -132,7 +132,7 @@ def save_clear_videos_on_misty():
         print(f"Failed to retrieve video list: {video_list_response.text}")
 
 if __name__ == "__main__":
-    #record()
+    record(30)
     #check_video_list()
     
     #record_until_s()
