@@ -17,34 +17,6 @@ if not MISTY_IP:
 
 misty = Robot(MISTY_IP)
 
-def record_until_s():
-    misty_video_filename = "test"
-    width = 3840
-    height = 2160
-
-    print("Recording started. Press 's' to stop recording and save the video.")
-
-    misty.start_recording_video(fileName=misty_video_filename, mute=False, duration=300, width=width, height=height)
-
-    # Create a blank OpenCV window just for key listening
-    cv2.namedWindow("Recording... Press 's' to stop", cv2.WINDOW_NORMAL)
-
-    while True:
-        # OpenCV needs a frame to listen for keys; so use a dummy black image
-        dummy_frame = np.zeros((100, 400, 3), dtype=np.uint8)
-        cv2.imshow("Recording... Press 's' to stop", dummy_frame)
-
-        key = cv2.waitKey(100) & 0xFF
-        if key == ord('s'):
-            print("Stopping recording...")
-            break
-        
-    misty.stop_recording_video()
-    cv2.destroyAllWindows()
-    #wait 5 seconds 
-    time.sleep(5)
-
-
 
 def record(d):
 
@@ -135,5 +107,5 @@ if __name__ == "__main__":
     record(30)
     #check_video_list()
     
-    #record_until_s()
+
     save_clear_videos_on_misty()
