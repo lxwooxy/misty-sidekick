@@ -19,7 +19,7 @@ misty = Robot(MISTY_IP)
 
 
 def record(d):
-
+    """Record video on Misty for a specified duration."""
     # Video filename on Misty's storage
     misty_video_filename = "test"
     width = 3840
@@ -28,7 +28,7 @@ def record(d):
     duration = d
     misty.start_recording_video(fileName=misty_video_filename, mute=False, duration=duration, width=width, height=height)
 
-    print("Recording video for 5 seconds...")
+    print(f"Recording video for {d} seconds...")
     
 
     time.sleep(duration)
@@ -107,5 +107,4 @@ if __name__ == "__main__":
     record(30)
     #check_video_list()
     
-
     save_clear_videos_on_misty()

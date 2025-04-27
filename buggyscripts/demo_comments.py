@@ -118,7 +118,7 @@ def wave_back(arm):
 
     # If pose estimation is not running, don't wave
     if not pose_estimation_running:
-        #print("❌ No person detected. Ignoring wave.")
+        #print("No person detected. Ignoring wave.")
         waving_now = False
         return  
 
@@ -186,7 +186,7 @@ def person_detection(data):
     else:
         person_lost_count += 1
         if person_lost_count >= lost_threshold:
-            #print("❌ No person detected for multiple frames. Stopping pose estimation.")
+            #print("No person detected for multiple frames. Stopping pose estimation.")
             misty.last_pose_keypoints = []  # Clear stored keypoints
             waving_now = False  # Prevent Misty from responding
 
