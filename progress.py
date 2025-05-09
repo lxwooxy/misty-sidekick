@@ -315,68 +315,7 @@ def bumper_touched(data):
     print(f"Misty's bumper was touched!")
     print(f"Sensor ID: {message['sensorId']}")
     
-    if message["isContacted"]:
-        misty.play_audio("miku.mp3")  
-        misty.display_image("e_Joy.jpg")
-
-        miku_duration = 10  # seconds
-        interval = 0.5
-        start_time = time.time()
-
-        rgb_colors = [
-            {"red": 0, "green": 255, "blue": 255},   # Cyan
-            {"red": 255, "green": 0, "blue": 255},   # Magenta
-            {"red": 255, "green": 255, "blue": 0},   # Yellow
-        ]
-        color_index = 0
-        step = 0
-
-        while time.time() - start_time < miku_duration:
-            elapsed = time.time() - start_time
-
-            if step == 0 and elapsed > 1:
-                # "One"
-                misty.display_image("e_ContentRight.jpg")
-                misty.move_arms(45, -45)
-                misty.move_head(-10, 20, -10, 70)
-                step += 1
-            elif step == 1 and elapsed > 2:
-                # "Two"
-                misty.display_image("e_ContentLeft.jpg")
-                misty.move_arms(-45, 45)
-                misty.move_head(-10, -20, 10, 70)
-                step += 1
-            elif step == 2 and elapsed > 3:
-                # "Three"
-                misty.display_image("e_ContentRight.jpg")
-                misty.move_arms(0, 0)
-                misty.move_head(0, 0, 0, 70)
-                step += 1
-            elif step == 3 and elapsed > 3.5:
-                # "MIKU MIKU BEAM!"
-                misty.display_image("e_EcstacyStarryEyed.jpg")
-                misty.move_arms(-90, -90)
-                misty.change_led(0, 255, 20)  # Green
-                misty.drive(0, 100)  # Spin left!
-                time.sleep(5)
-                step += 1
-            elif step == 4 and elapsed > 6:
-                misty.halt()
-                step += 1
-
-            # Cycle LEDs
-            color = rgb_colors[color_index % len(rgb_colors)]
-            misty.change_led(color["red"], color["green"], color["blue"])
-            color_index += 1
-
-            time.sleep(interval)
-
-        # Reset
-        misty.halt()
-        misty.move_head(0, 0, 0, 70)
-        misty.move_arms(70, 70)
-        misty.change_led(0, 0, 0)
-        misty.display_image("e_DefaultContent.jpg")
+    # swwaww
 
     #ADD A LOCK SO THAT WE IGNORE THE BUMPER TOUCH EVENT WHILE MISTY IS DANCING
     
@@ -459,6 +398,9 @@ def on_press(key):
         
         # Apply head movement
         misty.move_head(head_pitch, head_roll, head_yaw, velocity=50)
+        misty.move_head(0, 0, 0)  # Reset head position
+        
+        misty.move_arms(90,90)
 
 def on_release(key):
     stop_drive()
